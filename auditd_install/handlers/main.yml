@@ -1,0 +1,8 @@
+---
+# handlers file for auditd_install
+
+- name: Restart auditd service
+  ansible.builtin.service:
+    name: auditd
+    state: restarted
+  when: ansible_distribution == 'Debian'
