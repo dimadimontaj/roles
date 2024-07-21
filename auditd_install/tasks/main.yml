@@ -1,24 +1,21 @@
 ---
 # tasks file for auditd_install
 
-- block: #===== Debian =====
-
-  - name: Install auditd
-    ansible.builtin.apt:
-      name: auditd
-      state: present
-
-  - name: Start auditd
-    ansible.builtin.service:
-      name: auditd
-      state: started
-      enabled: true
-
-  - name: Auditd cofiguration
-    ansible.builtin.copy:
-      src: audit.rules
-      dest: "{{ dest_rule_path }}"
-    notify:
-    - Restart auditd service
-
+- name: Install auditd
+  ansible.builtin.apt:
+    name: auditd
+    state: present
   when: ansible_distribution == 'Debian'
+
+- name: Start auditd
+  ansible.builtin.service:
+    name: auditd
+    state: started
+    enabled: true
+
+- name: Auditd cofiguration
+  ansible.builtin.copy:
+    src: audit.rules
+    dest: "{{ dest_rule_path }}"
+  notify:
+  - Restart auditd service
