@@ -5,6 +5,15 @@
   ansible.builtin.apt:
     name: auditd
     state: present
+    update_cache: yes
+  when: ansible_distribution == 'Debian'
+
+- name: Auditd cofiguration
+  ansible.builtin.copy:
+    src: audit.rules
+    dest: "/etc/audit/rules.d/audit.rules"
+  notify:
+  - Restart auditd service
   when: ansible_distribution == 'Debian'
 
 - name: Start auditd
@@ -12,10 +21,5 @@
     name: auditd
     state: started
     enabled: true
+  when: ansible_distribution == 'Debian'
 
-- name: Auditd cofiguration
-  ansible.builtin.copy:
-    src: audit.rules
-    dest: "{{ dest_rule_path }}"
-  notify:
-  - Restart auditd service
