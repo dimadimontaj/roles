@@ -1,4 +1,0 @@
----
-# vars file for auditd_install
-
-dest_rule_path: /etc/audit/rules.d/audit.rules
