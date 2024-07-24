@@ -1,2 +1,4 @@
 ---
 # defaults file for remove_old_packeges_on_debian
+
+old_packeges: []
