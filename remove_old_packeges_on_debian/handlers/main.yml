@@ -1,2 +1,6 @@
 ---
 # handlers file for remove_old_packeges_on_debian
+
+- name: Cleanup complete
+  debug:
+    msg: "Old packeges removal completed"
