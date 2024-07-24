@@ -1,14 +1,15 @@
 auditd_install
 =========
 
+!!! ПОДСТАВИТЬ НУЖНЫЕ ПРАВИЛА В files !!!
+
 Example Playbook
 ----------------
 ```
-- name: Install and cofigure auditd
-  hosts: all
-  become: yes
-  roles:
-    - { role: auditd_install, when: ansible_distribution == "Debian" }
+hosts: all
+become: yes
+roles:
+  - role: auditd_install
 ```
 License
 -------
