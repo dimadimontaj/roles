@@ -1,0 +1,47 @@
+---
+# tasks file for dogtag
+
+- name: Install dogtag pki packeges
+  apt_rpm:
+    name:
+      - pki-base
+      - pki-ca
+      - pki-tools
+      - 389-ds-base
+    state: present
+    update_cache: true
+
+- name: 389ds copy instance template
+  template:
+    src: ds.inf.j2
+    dest: /root/{{ instance_name }}.inf
+
+- name: 389ds create instance
+  command:
+    cmd: dscreate from-file /root/{{ instance_name }}.inf
+
+- name: Add LDAP entry
+  shell: |
+    ldapadd -H ldap://{{ ldap_hostname }} -x -D "{{ ldap_bind_dn }}" -w "{{ ldap_password }}" << EOF
+    dn: dc=pki,dc=example,dc=com
+    objectClass: domain
+    dc: pki
+    EOF
+  environment:
+    LDAP_TLS_REQCERT: never
+  become: yes
+
+- name: 389ds start service
+  ansible.builtin.service:
+    name: dirsrv@{{ ds_instance_name }}
+    state: started
+    enabled: yes
+
+- name: Copy ca configuration
+  template:
+    src: ca.cfg.j2
+    dest: /root/ca.cfg
+
+- name: start CA
+  command:
+    cmd: pkispawn -f /root/ca.cfg -s "{{ ca_subsystem_name }}"

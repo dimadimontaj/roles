@@ -1,0 +1,64 @@
+
+;
+; This is a version 2 ds setup inf file.
+; It is used by the python versions of setup-ds-*
+; Most options map 1 to 1 to the original .inf file.
+; However, there are some differences that I envision
+; For example, note the split backend section.
+; You should be able to create, one, many or no backends in an install
+;
+; The special value {instance_name} is substituted at installation time.
+;
+; By default, all configuration parameters in this file are commented out.
+; To use an INF file with dscreate, you must at least set the parameters
+; flagged with [REQUIRED].
+
+[general]
+;defaults = 999999999
+
+;full_machine_name = altlinux-CA
+
+;start = True
+
+;strict_host_checking = False
+
+[slapd]
+instance_name = {{ ds_instance_name }}
+
+;ldapi = /run/slapd-{instance_name}.socket
+
+;port = 389
+
+root_password = {{ ds_root_password }}
+
+;secure_port = 636
+
+self_sign_cert = {{ ds_self_sign_cert }}
+
+;self_sign_cert_valid_months = 24
+
+[backend-userroot]
+;changelog_max_age = 7d
+
+;changelog_max_entries = -1
+
+create_suffix_entry = {{ ds_create_suffix_entry }}
+
+;enable_replication = False
+
+;replica_binddn = cn=replication manager,cn=config
+
+;replica_bindgroup = 
+
+;replica_bindpw = 
+
+;replica_id = 1
+
+;replica_role = supplier
+
+;require_index = False
+
+;sample_entries = no
+
+suffix = {{ ds_suffix }}
+
